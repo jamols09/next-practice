@@ -2,9 +2,11 @@ import { useState } from 'react'
 import { Button } from 'react-bootstrap'
 import MainPage from '../components/MainPage'
 import styles from '../styles/Home.module.css'
+import { useRouter } from 'next/router'
 
 function UseState() {
     const [names, setName] = useState([]);
+    const router = useRouter()
     
     const constFunc = function () { //const function; declared as anonymous function, will not show a name when debugging
         setName([
@@ -25,9 +27,10 @@ function UseState() {
             }
         ])
     }
-
+    
     return (
         <MainPage>
+            <a onClick={() => router.back()}>Back</a>
             <h1>How to use useState()</h1>
             
             <div>
