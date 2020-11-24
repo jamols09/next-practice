@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
-import NavItem from '../components/NavItem'
+import NavItem from './NavItem'
 
 function HomePage({ children, urlPages }) {
   return (
@@ -28,7 +28,7 @@ function HomePage({ children, urlPages }) {
                 <NavItem href="/useState" label="TEST useState"/>
               </li>
               <li >
-                <NavItem href="/routeLinks" label="TEST1 routeLinks"/>
+                <NavItem href="/navItems" label="TEST1 navItems"/>
               </li> */}
           </ul>
         </div>
