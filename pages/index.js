@@ -1,6 +1,6 @@
 // import { HomePage } from '../components/homePage' if homePage.js is declared as export HomePage
 import axios from 'axios'
-import HomePage from '../components/homePage'
+import HomePage from '../components/HomePage'
 
 function Index({urlPages}) {
     console.log(urlPages)
