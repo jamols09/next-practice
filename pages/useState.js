@@ -1,12 +1,10 @@
 import { useState } from 'react'
 import { Button } from 'react-bootstrap'
 import MainPage from '../components/MainPage'
-import styles from '../styles/Home.module.css'
-import { useRouter } from 'next/router'
+import Link from 'next/link'
 
 function UseState() {
-    const [names, setName] = useState([]);
-    const router = useRouter()
+    const [names, setName] = useState([])
     
     const constFunc = function () { //const function; declared as anonymous function, will not show a name when debugging
         setName([
@@ -30,29 +28,35 @@ function UseState() {
     
     return (
         <MainPage>
-            <a onClick={() => router.back()}>Back</a>
-            <h1>How to use useState()</h1>
+            {/* <a onClick={() => router.back()}>Back</a> */} {/* or you can do this */}
+            <Link href={`/`}>Back</Link>                              
+            <h1>Learn how to use useState()</h1>
             
             <div>
                 <div>
-                    <span className={styles.description}>View the code to learn</span>
+                    <p>View code to learn</p>
                 </div>
                 <div>
                     {/* <button 
-                        // onClick={constFunc}
-                        onClick={callFunc}
+                        onClick={constFunc}
                     >
                         Click me
                     </button> */}
-                    <Button
+                    {/* <Button
                         variant='primary'
                         onClick={callFunc}
-                        >
+                    >
+                        Click Add
+                    </Button> */}
+                    <Button 
+                        variabnt='secondary'
+                        onClick={() => setName([...names,{id: 1, name: "Oliver"}])}
+                    >
                         Click Add
                     </Button>
                     <ul>
                         {/* {names.map(({ id, name }) => { //explicit return
-                            <li key={id}>{name}</li>
+                            return <li key={id}>{name}</li>
                         })} */}
 
                         {names.map(({ id, name }) => ( //implicit return
