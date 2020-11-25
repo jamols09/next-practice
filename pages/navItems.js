@@ -1,12 +1,16 @@
 import axios from 'axios'
 import Link from 'next/link'
-import MainPage from '../components/MainPage';
+import MainPage from '../components/MainPage'
+import { useRouter } from 'next/router'
 
 function NavLinks({ dynamicPage }) {
-    console.log(dynamicPage);
+    const router = useRouter()
+    console.log(dynamicPage)
+    
     return (
         <MainPage>
             <div>
+                <a onClick={() => router.back()}>Back</a>
                 <h5>You can view the code how axios fills the list</h5>
                 <ul> 
                     {dynamicPage.map( ({dynamic, routes}) => (
