@@ -5,12 +5,14 @@ import { useRouter } from 'next/router'
 
 function NavLinks({ dynamicPage }) {
     const router = useRouter()
+
     console.log(dynamicPage)
     
     return (
         <MainPage>
             <div>
-                <a onClick={() => router.back()}>Back</a>
+                {/* <a onClick={() => router.back()}>Back</a> */} {/* or you can do this */}
+                <Link href={`/`}>Back</Link>
                 <h5>You can view the code how axios fills the list</h5>
                 <ul> 
                     {dynamicPage.map( ({dynamic, routes}) => (
