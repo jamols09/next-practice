@@ -16,10 +16,19 @@ function FormPage() {
     const { sex } = data
 
     const [validpass, setPass] = useState({ password: '', confirm_password: '', isValid : false})
+    
     useEffect(() => {
-        console.log(validpass)
+        if(validpass.confirm_password) {
+            
+            if(validpass.password === validpass.confirm_password) {
+                setPass(prevState => ({
+                    ...prevState,
+                    isValid: true
+                }))
+                
+            }
+        } 
     }, [validpass])
-
     //you cannot log immidiately on useState since useState is asynchronous
     //therefore console.log will execute even if its after setting on useState's function
     // console.log(rsex, "oldValue?")
@@ -46,22 +55,10 @@ function FormPage() {
    }
 
     const passValidation = (input,e) => {
-          
         setPass(prevPass => ({
             ...prevPass,
             [input]: e.target.value
         }))
-
-        if(validpass.confirm_password) {
-            if(validpass.password === validpass.confirm_password) {
-                setPass(prevState => ({
-                    ...prevState,
-                    isValid: true
-                }))
-            }
-        } else {
-            
-        }
     }   
 
     const handleSubmit = async (e) => {
