@@ -9,7 +9,14 @@ function Index({urlPages}) {
     )
 }
 
-export async function getServerSideProps() {
+/**
+ * https://www.reddit.com/r/reactjs/comments/frfihl/how_should_nextjs_getstaticprops_and/
+ * 
+ * getStaticProps is great for evergreen content and base pages that aren't updated often. 
+ * getServerSideProps is good for constantly changing content like a COVID-19 updates page
+ */
+
+export async function getStaticProps() {
     //axios
     try {
         const api = await axios.get('http://localhost:3000/api/links')
