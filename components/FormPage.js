@@ -1,6 +1,7 @@
 import { Form, Button, Col, Row } from 'react-bootstrap'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import { render } from 'react-dom'
 
 function FormPage() {
     const [data, setData] = useState({
@@ -25,7 +26,11 @@ function FormPage() {
                     ...prevState,
                     isValid: true
                 }))
-                
+            } else {
+                setPass(prevState => ({
+                    ...prevState,
+                    isValid: false
+                }))
             }
         } 
     }, [validpass])
@@ -71,112 +76,129 @@ function FormPage() {
         }
     }
 
+    const PasswordNotif = (e) => {
+        if(!validpass.isValid && validpass.confirm_password) {
+            return (
+                <Form.Text className="text-danger">Password should be same</Form.Text>
+            )
+        } else {
+            return ''
+        }
+    }
 
-   
+    /**
+     * 
+     * You can write your components as pure functions or as classes. 
+     * When writing you components as classes, you have to have a render method defined on that class. 
+     * If you are writing the component as a pure function, you can just return the markup/jsx that the component should render.
+     */
 
-   return (
-    
-    <Form onSubmit={handleSubmit}>
-        <p>View the code to learn more. The name field has different implementation as the other field. Also radio buttons has extra steps to make it work</p>
-        <Row>
-            <Col>
-                <Form.Group>
-                    <Form.Label>Username</Form.Label>   
-                    <Form.Control id="username" name="username" type="text" onChange={(e) => setData((prevData) => {return {...prevData,name: e.target.value}})} placeholder="Your username"></Form.Control>
-                </Form.Group>
-            </Col>
-            <Col>
-                <Form.Group >
-                    <Form.Label>Email</Form.Label>
-                    <Form.Control id="email" type="email" name="email" placeholder="Your email" onChange={(e) => handleInput('email',e)} ></Form.Control>
-                </Form.Group>
-            </Col>
-        </Row>
-        <Row>
-            <Col>
-                <Form.Group >
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control id="password" name="password" type="password" onChange={(e) => passValidation('password',e)}></Form.Control>
-                </Form.Group>
-            </Col>
-            <Col>
-                <Form.Group >
-                    <Form.Label>Confirm password</Form.Label>
-                    <Form.Control id="confirm_password" name="confirm_password" type="password" onChange={(e) => passValidation('confirm_password',e)}></Form.Control>
-                    <Form.Text className="text-danger">Password should be same</Form.Text>
-                </Form.Group>
-            </Col>
-        </Row>
-        <Row>
-            <Col>
-                <Form.Group>
-                    <Form.Label>First name</Form.Label>   
-                    <Form.Control id="first_name" name="first_name" type="text" onChange={(e) => handleInput('first_name',e)} ></Form.Control>
-                </Form.Group>
-            </Col>
-            <Col>
-                <Form.Group >
-                    <Form.Label>Middle name</Form.Label>
-                    <Form.Control id="middle_name" name="middle_name" type="text" onChange={(e) => handleInput('middle_name',e)} ></Form.Control>
-                </Form.Group>
-            </Col>
-            <Col>
-                <Form.Group >
-                    <Form.Label>Last name</Form.Label>
-                    <Form.Control id="last_name" type="text" name="last_name" onChange={(e) => handleInput('last_name',e)} ></Form.Control>
-                </Form.Group>
-            </Col>
-        </Row>
-        <Row>
-            <Col>
-                <Form.Group >
-                    <Form.Label>Email</Form.Label>
-                    <Form.Control id="email" type="email" name="email" placeholder="Your email" onChange={(e) => handleInput('email',e)} ></Form.Control>
-                    <Form.Text className="text-muted">Just some sample inputs</Form.Text>
-                </Form.Group>
-            </Col>
-            <Col>
-                <Form.Group >
-                    <Form.Label>Date of birth</Form.Label>
-                    <Form.Control id="birth" name="birth" type="date"></Form.Control>
-                </Form.Group>
-            </Col>
-        </Row>
-        <Row>
-            <Col>
-                <Form.Label>Gender</Form.Label>
-                <Form.Group >
-                    <Row>   
-                        <Col>
-                            <Form.Check
-                                value="M"
-                                id="maleRadio"
-                                type="radio"
-                                label="Male"
-                                onChange={(e) => handleInput('sex', e)}
-                                checked={sex === 'M' ? true : false}
-                            />
-                        </Col>
-                        <Col>
-                            <Form.Check
-                                value="F"
-                                id="femaleRadio"
-                                type="radio"
-                                label="Female"
-                                onChange={(e) => handleInput('sex', e)}
-                                checked={sex === 'F' ? true : false}
-                            />
-                        </Col>
-                    </Row>
-                </Form.Group>
-            </Col>
-            <Col></Col>
-            <Col></Col>
-            <Col></Col>
-        </Row>
-        <Button variant="info" type="submit">Register</Button>
-    </Form>
-   )
+    return (
+        
+        <Form onSubmit={handleSubmit}>
+            <p>View the code to learn more. The name field has different implementation as the other field. Also radio buttons has extra steps to make it work</p>
+            <Row>
+                <Col>
+                    <Form.Group>
+                        <Form.Label>Username</Form.Label>   
+                        <Form.Control id="username" name="username" type="text" onChange={(e) => setData((prevData) => {return {...prevData,name: e.target.value}})} placeholder="Your username"></Form.Control>
+                    </Form.Group>
+                </Col>
+                <Col>
+                    <Form.Group >
+                        <Form.Label>Email</Form.Label>
+                        <Form.Control id="email" type="email" name="email" placeholder="Your email" onChange={(e) => handleInput('email',e)} ></Form.Control>
+                    </Form.Group>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <Form.Group >
+                        <Form.Label>Password</Form.Label>
+                        <Form.Control id="password" name="password" type="password" onChange={(e) => passValidation('password',e)}></Form.Control>
+                    </Form.Group>
+                </Col>
+                <Col>
+                    <Form.Group >
+                        <Form.Label>Confirm password</Form.Label>
+                        <Form.Control id="confirm_password" name="confirm_password" type="password" onChange={(e) => passValidation('confirm_password',e)}></Form.Control>
+                        {/* if password not the same */}
+                        {<PasswordNotif/>}
+                        {/* else do not show */}
+                    </Form.Group>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <Form.Group>
+                        <Form.Label>First name</Form.Label>   
+                        <Form.Control id="first_name" name="first_name" type="text" onChange={(e) => handleInput('first_name',e)} ></Form.Control>
+                    </Form.Group>
+                </Col>
+                <Col>
+                    <Form.Group >
+                        <Form.Label>Middle name</Form.Label>
+                        <Form.Control id="middle_name" name="middle_name" type="text" onChange={(e) => handleInput('middle_name',e)} ></Form.Control>
+                    </Form.Group>
+                </Col>
+                <Col>
+                    <Form.Group >
+                        <Form.Label>Last name</Form.Label>
+                        <Form.Control id="last_name" type="text" name="last_name" onChange={(e) => handleInput('last_name',e)} ></Form.Control>
+                    </Form.Group>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <Form.Group >
+                        <Form.Label>Email</Form.Label>
+                        <Form.Control id="email" type="email" name="email" placeholder="Your email" onChange={(e) => handleInput('email',e)} ></Form.Control>
+                        <Form.Text className="text-muted">Just some sample inputs</Form.Text>
+                    </Form.Group>
+                </Col>
+                <Col>
+                    <Form.Group >
+                        <Form.Label>Date of birth</Form.Label>
+                        <Form.Control id="birth" name="birth" type="date"></Form.Control>
+                    </Form.Group>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <Form.Label>Gender</Form.Label>
+                    <Form.Group >
+                        <Row>   
+                            <Col>
+                                <Form.Check
+                                    value="M"
+                                    id="maleRadio"
+                                    type="radio"
+                                    label="Male"
+                                    onChange={(e) => handleInput('sex', e)}
+                                    checked={sex === 'M' ? true : false}
+                                />
+                            </Col>
+                            <Col>
+                                <Form.Check
+                                    value="F"
+                                    id="femaleRadio"
+                                    type="radio"
+                                    label="Female"
+                                    onChange={(e) => handleInput('sex', e)}
+                                    checked={sex === 'F' ? true : false}
+                                />
+                            </Col>
+                        </Row>
+                    </Form.Group>
+                </Col>
+                <Col></Col>
+                <Col></Col>
+                <Col></Col>
+            </Row>
+            <Button variant="info" type="submit">Register</Button>
+        </Form>
+    )
+
 }
 
 export default FormPage
