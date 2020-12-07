@@ -8,7 +8,7 @@ function FormPage() {
         username: '',
         password: '',
         email: '',
-        sex: '',
+        sex: '',    
         first_name: '',
         middle_name: '',
         last_name: '',
@@ -16,39 +16,37 @@ function FormPage() {
     })
     const { sex } = data
 
-    const [validpass, setPass] = useState({ password: '', confirm_password: '', isValid : false})
+    const [validPass, setValidPass] = useState(false);
+    const [password, setPass] = useState({ password: '', confirm_password: ''})
     
     useEffect(() => {
-        if(validpass.confirm_password) {
-            
-            if(validpass.password === validpass.confirm_password) {
-                setPass(prevState => ({
-                    ...prevState,
-                    isValid: true
-                }))
-            } else {
-                setPass(prevState => ({
-                    ...prevState,
-                    isValid: false
-                }))
-            }
-        } 
-    }, [validpass])
-    //you cannot log immidiately on useState since useState is asynchronous
-    //therefore console.log will execute even if its after setting on useState's function
+        setValidPass(password.password === password.confirm_password && password.confirm_password)
+    }, [password.password, password.confirm_password]) //be specific when what value you will track when using useEffect
+
+    useEffect(() => {
+        if(validPass) {
+            setData(prevData => ({
+                ...prevData,
+                password: password.password
+            }))
+        }
+    },[validPass])//The last parameter of the useEffect is called a dependency array.  When an object is modified the effect will trigger.  
+
+    // you cannot log immidiately on useState since useState is asynchronous
+    // therefore console.log will execute even if its after setting on useState's function
     // console.log(rsex, "oldValue?")
-    const selS = (e) => {
-        setSex(oldVal => ({
-            ...oldVal,
-            sex: e.target.value
-        }))
-    }
+    // const selS = (e) => {
+    //     setSex(oldVal => ({
+    //         ...oldVal,
+    //         sex: e.target.value
+    //     }))
+    // }
 
     const handleInput = (input,e) => {
         // sample
         // const key = "123"
         // const obj = {
-        //     [key] : [key] 
+        //     [key] : [key] //the key = '123', value = [0] => '123'
         // }
 
         setData((prevData) => {
@@ -77,11 +75,25 @@ function FormPage() {
     }
 
     const PasswordNotif = (e) => {
-        if(!validpass.isValid && validpass.confirm_password) {
+        if(!validPass && password.confirm_password) {
             return (
                 <Form.Text className="text-danger">Password should be same</Form.Text>
             )
         } else {
+            if(password.confirm_password) {
+                return (
+                    <Form.Text className="text-success">Confirmed</Form.Text>
+                )
+            }
+            return ('')
+        }
+    }
+
+    const isDisabled = (e) => {
+        if(!validPass) {
+            return 'disabled'
+        }
+        else {
             return ''
         }
     }
@@ -100,8 +112,8 @@ function FormPage() {
             <Row>
                 <Col>
                     <Form.Group>
-                        <Form.Label>Username</Form.Label>   
-                        <Form.Control id="username" name="username" type="text" onChange={(e) => setData((prevData) => {return {...prevData,name: e.target.value}})} placeholder="Your username"></Form.Control>
+                        <Form.Label>Username</Form.Label>
+                        <Form.Control id="username" name="username" type="text" onChange={(e) => handleInput('username',e)} placeholder="Your username"></Form.Control>
                     </Form.Group>
                 </Col>
                 <Col>
@@ -148,20 +160,14 @@ function FormPage() {
                     </Form.Group>
                 </Col>
             </Row>
-            <Row>
-                <Col>
-                    <Form.Group >
-                        <Form.Label>Email</Form.Label>
-                        <Form.Control id="email" type="email" name="email" placeholder="Your email" onChange={(e) => handleInput('email',e)} ></Form.Control>
-                        <Form.Text className="text-muted">Just some sample inputs</Form.Text>
-                    </Form.Group>
-                </Col>
+            <Row>   
                 <Col>
                     <Form.Group >
                         <Form.Label>Date of birth</Form.Label>
-                        <Form.Control id="birth" name="birth" type="date"></Form.Control>
+                        <Form.Control id="birth" name="birth" type="date" onChange={(e) => handleInput('birth', e)}></Form.Control>
                     </Form.Group>
                 </Col>
+                <Col></Col>
             </Row>
             <Row>
                 <Col>
@@ -195,10 +201,21 @@ function FormPage() {
                 <Col></Col>
                 <Col></Col>
             </Row>
-            <Button variant="info" type="submit">Register</Button>
+            <Button variant="info" type="submit" disabled={!validPass}>Register</Button>
         </Form>
     )
 
 }
 
 export default FormPage
+
+/**
+ * useEffect is going to do a referential equality check on options between every render,
+ * and thanks to the way JavaScript works, options will be new every time so when React tests
+ * whether options changed between renders it'll always evaluate to true, meaning the useEffect
+ * callback will be called after every render rather than only when bar and baz change.
+ * 
+ * https://kentcdodds.com/blog/usememo-and-usecallback
+ * 
+ * https://gist.github.com/migsc/8f502b5ba1fa376b93a843aaef236828
+ */
